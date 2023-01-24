@@ -1,10 +1,8 @@
 package com.vikhani.lunchvote.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Set;
 import java.time.LocalDateTime;
@@ -15,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Menu extends BaseEntity {
+    @CreationTimestamp
     @Column(name = "date_time", nullable = false)
     private LocalDateTime datetime;
 
@@ -24,6 +23,16 @@ public class Menu extends BaseEntity {
     private String restaurantName;
 
     @Column(name = "meal")
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)  // TODO fetch type ???
     private Set<Meal> meals;
+
+    public Menu(Integer id, LocalDateTime datetime, String restaurantName, Set<Meal> meals) {
+        super(id);
+        this.datetime = datetime;
+        this.restaurantName = restaurantName;
+        this.meals = meals;
+    }
+    public Menu(LocalDateTime datetime, String restaurantName, Set<Meal> meals) {
+        this(null, datetime, restaurantName, meals);
+    }
 }

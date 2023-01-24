@@ -20,6 +20,6 @@ public class AuthUser extends org.springframework.security.core.userdetails.User
 
     @Override
     public String toString() {
-        return "AuthUser:" + user.getId() + '[' + user.getEmail() + ']';
+        return "AuthUser:" + user.getId() + '[' + user.getEmail() + " - " + user.getRoles() + ']';
     }
 }

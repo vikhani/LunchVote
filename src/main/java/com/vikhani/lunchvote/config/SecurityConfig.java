@@ -1,6 +1,8 @@
 package com.vikhani.lunchvote.config;
 
 import com.vikhani.lunchvote.AuthUser;
+import com.vikhani.lunchvote.controller.MenuController;
+import com.vikhani.lunchvote.controller.RegistrationController;
 import com.vikhani.lunchvote.model.Role;
 import com.vikhani.lunchvote.model.User;
 import com.vikhani.lunchvote.repository.UserRepository;
@@ -50,12 +52,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
+                .requestMatchers("/", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
-                .requestMatchers(HttpMethod.POST, "/api/register").anonymous()
+                .requestMatchers(HttpMethod.POST, MenuController.REST_URL + "/**").hasRole(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.POST, RegistrationController.REST_URL).anonymous()
                 .requestMatchers("/api/**").authenticated()
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().disable();
+
         return http.build();
     }
 }

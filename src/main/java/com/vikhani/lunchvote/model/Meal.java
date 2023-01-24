@@ -22,8 +22,25 @@ public class Meal extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL) // TODO fetch type ???
     @JoinColumn(name = "menu_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Menu menu;
+
+    public Meal(Integer id, String name, BigDecimal price, Menu menu) {
+        super(id);
+        this.name = name;
+        this.price = price;
+        this.menu = menu;
+    }
+
+    public Meal(Integer id, String name, BigDecimal price) {
+        super(id);
+        this.name = name;
+        this.price = price;
+    }
+
+    public Meal(String name, BigDecimal price) {
+        this(null, name, price);
+    }
 }
